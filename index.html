@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blackjack</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="table">
+    <header class="topbar">
+      <h1>♠ Blackjack ♥</h1>
+      <div class="bank">
+        <span class="bank-label">Bakiye</span>
+        <span id="balance">1000</span> ₺
+      </div>
+    </header>
+
+    <!-- Krupiye -->
+    <section class="hand-area">
+      <div class="hand-label">
+        Krupiye <span id="dealer-score" class="score"></span>
+      </div>
+      <div id="dealer-cards" class="cards"></div>
+    </section>
+
+    <!-- Mesaj -->
+    <div id="message" class="message">Bahsini yap ve PLAY'e bas!</div>
+
+    <!-- Oyuncu -->
+    <section class="hand-area">
+      <div class="hand-label">
+        Sen <span id="player-score" class="score"></span>
+      </div>
+      <div id="player-cards" class="cards"></div>
+    </section>
+
+    <!-- Bahis alanı -->
+    <section class="betting" id="betting">
+      <div class="bet-boxes">
+        <div class="bet-box">
+          <div class="bet-title">Ana Bahis</div>
+          <div class="bet-value" id="main-bet">0</div>
+          <button class="clear-btn" data-bet="main">Temizle</button>
+        </div>
+        <div class="bet-box side">
+          <div class="bet-title">Perfect Pairs</div>
+          <div class="bet-value" id="pp-bet">0</div>
+          <button class="clear-btn" data-bet="pp">Temizle</button>
+        </div>
+        <div class="bet-box side">
+          <div class="bet-title">21+3</div>
+          <div class="bet-value" id="tp-bet">0</div>
+          <button class="clear-btn" data-bet="tp">Temizle</button>
+        </div>
+      </div>
+
+      <div class="active-bet">
+        Seçili kutu:
+        <select id="bet-target">
+          <option value="main">Ana Bahis</option>
+          <option value="pp">Perfect Pairs</option>
+          <option value="tp">21+3</option>
+        </select>
+      </div>
+
+      <div class="chips">
+        <button class="chip chip-5" data-amount="5">5</button>
+        <button class="chip chip-25" data-amount="25">25</button>
+        <button class="chip chip-100" data-amount="100">100</button>
+        <button class="chip chip-500" data-amount="500">500</button>
+      </div>
+    </section>
+
+    <!-- Kontroller -->
+    <section class="controls">
+      <button id="play-btn" class="btn primary">PLAY</button>
+      <button id="hit-btn" class="btn" disabled>Hit</button>
+      <button id="stand-btn" class="btn" disabled>Stand</button>
+      <button id="double-btn" class="btn" disabled>Double</button>
+      <button id="split-btn" class="btn" disabled>Split</button>
+    </section>
+
+    <details class="rules">
+      <summary>Kurallar & Side Bet Ödemeleri</summary>
+      <ul>
+        <li>Blackjack 3:2 öder, krupiye 17'de durur (soft 17 dahil).</li>
+        <li>Double: ilk iki kartta bahsi ikiye katlar, 1 kart alırsın.</li>
+        <li>Split: aynı değerde iki kartı ayırırsın.</li>
+        <li><b>Perfect Pairs</b>: İlk iki kartın çiftse — Perfect 25:1, Renk 12:1, Karışık 6:1.</li>
+        <li><b>21+3</b>: İlk iki kartın + krupiyenin açık kartı poker eli — Suited Trips 100:1, Straight Flush 40:1, Three of a Kind 30:1, Straight 10:1, Flush 5:1.</li>
+      </ul>
+    </details>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
