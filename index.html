@@ -3,11 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Blackjack</title>
+  <title>Casino — Blackjack & Baccarat</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="table">
+  <nav class="game-nav">
+    <button class="nav-btn active" data-view="blackjack">♠ Blackjack</button>
+    <button class="nav-btn" data-view="baccarat">♦ Baccarat</button>
+    <button id="sound-toggle" class="sound-toggle" title="Ses aç/kapat">🔊</button>
+  </nav>
+
+  <!-- ===================== BLACKJACK ===================== -->
+  <div class="table view active" id="view-blackjack">
     <header class="topbar">
       <h1>♠ Blackjack ♥</h1>
       <div class="bank">
@@ -16,7 +23,6 @@
       </div>
     </header>
 
-    <!-- Krupiye -->
     <section class="hand-area">
       <div class="hand-label">
         Krupiye <span id="dealer-score" class="score"></span>
@@ -24,10 +30,8 @@
       <div id="dealer-cards" class="cards"></div>
     </section>
 
-    <!-- Mesaj -->
     <div id="message" class="message">Bahsini yap ve PLAY'e bas!</div>
 
-    <!-- Oyuncu -->
     <section class="hand-area">
       <div class="hand-label">
         Sen <span id="player-score" class="score"></span>
@@ -35,7 +39,6 @@
       <div id="player-cards" class="cards"></div>
     </section>
 
-    <!-- Bahis alanı -->
     <section class="betting" id="betting">
       <div class="bet-boxes">
         <div class="bet-box">
@@ -72,7 +75,6 @@
       </div>
     </section>
 
-    <!-- Kontroller -->
     <section class="controls">
       <button id="play-btn" class="btn primary">PLAY</button>
       <button id="hit-btn" class="btn" disabled>Hit</button>
@@ -93,6 +95,101 @@
     </details>
   </div>
 
+  <!-- ===================== BACCARAT ===================== -->
+  <div class="table view" id="view-baccarat">
+    <header class="topbar">
+      <h1>♦ Baccarat ♣</h1>
+      <div class="bank">
+        <span class="bank-label">Bakiye</span>
+        <span id="b-balance">1000</span> ₺
+      </div>
+    </header>
+
+    <section class="hand-area">
+      <div class="hand-label">
+        Banker <span id="banker-score" class="score"></span>
+      </div>
+      <div id="banker-cards" class="cards"></div>
+    </section>
+
+    <div id="b-message" class="message">Bahsini yap ve PLAY'e bas!</div>
+
+    <section class="hand-area">
+      <div class="hand-label">
+        Player <span id="bplayer-score" class="score"></span>
+      </div>
+      <div id="bplayer-cards" class="cards"></div>
+    </section>
+
+    <section class="betting">
+      <div class="bet-boxes">
+        <div class="bet-box bacc" data-bet="player">
+          <div class="bet-title">Player (1:1)</div>
+          <div class="bet-value" id="bp-bet">0</div>
+          <button class="clear-btn" data-bet="player">Temizle</button>
+        </div>
+        <div class="bet-box bacc banker" data-bet="banker">
+          <div class="bet-title">Banker (0.95:1)</div>
+          <div class="bet-value" id="bb-bet">0</div>
+          <button class="clear-btn" data-bet="banker">Temizle</button>
+        </div>
+        <div class="bet-box bacc tie" data-bet="tie">
+          <div class="bet-title">Tie (8:1)</div>
+          <div class="bet-value" id="bt-bet">0</div>
+          <button class="clear-btn" data-bet="tie">Temizle</button>
+        </div>
+      </div>
+      <div class="bet-boxes" style="margin-top:10px">
+        <div class="bet-box side" data-bet="ppair">
+          <div class="bet-title">Player Pair (11:1)</div>
+          <div class="bet-value" id="bpp-bet">0</div>
+          <button class="clear-btn" data-bet="ppair">Temizle</button>
+        </div>
+        <div class="bet-box side" data-bet="bpair">
+          <div class="bet-title">Banker Pair (11:1)</div>
+          <div class="bet-value" id="bbp-bet">0</div>
+          <button class="clear-btn" data-bet="bpair">Temizle</button>
+        </div>
+      </div>
+
+      <div class="active-bet">
+        Seçili kutu:
+        <select id="b-bet-target">
+          <option value="player">Player</option>
+          <option value="banker">Banker</option>
+          <option value="tie">Tie</option>
+          <option value="ppair">Player Pair</option>
+          <option value="bpair">Banker Pair</option>
+        </select>
+      </div>
+
+      <div class="chips">
+        <button class="chip chip-5 b-chip" data-amount="5">5</button>
+        <button class="chip chip-25 b-chip" data-amount="25">25</button>
+        <button class="chip chip-100 b-chip" data-amount="100">100</button>
+        <button class="chip chip-500 b-chip" data-amount="500">500</button>
+      </div>
+    </section>
+
+    <section class="controls">
+      <button id="b-play-btn" class="btn primary">PLAY</button>
+    </section>
+
+    <details class="rules">
+      <summary>Baccarat Kuralları</summary>
+      <ul>
+        <li>Amaç: Player veya Banker'dan hangisinin 9'a daha yakın olacağını tahmin etmek.</li>
+        <li>Kart değerleri: A=1, 10/J/Q/K=0, diğerleri yüzü kadar. Toplam tek hane (ör. 7+8=15 → 5).</li>
+        <li>8 veya 9 (Natural) gelirse el biter, üçüncü kart çekilmez.</li>
+        <li>Üçüncü kart çekimi standart baccarat tablosuna göre otomatik yapılır.</li>
+        <li>Ödemeler: Player 1:1, Banker 0.95:1 (%5 komisyon), Tie 8:1, Pair 11:1.</li>
+      </ul>
+    </details>
+  </div>
+
+  <script src="sound.js"></script>
   <script src="script.js"></script>
+  <script src="baccarat.js"></script>
+  <script src="nav.js"></script>
 </body>
 </html>

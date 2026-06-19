@@ -137,6 +137,7 @@ document.querySelectorAll(".chip").forEach((chip) => {
       return;
     }
     bets[target] += amount;
+    Sound.chip();
     renderBets();
   });
 });
@@ -233,6 +234,7 @@ function startRound() {
   dealerHand = [draw(), draw()];
   playerHands = [{ cards: [draw(), draw()], bet: bets.main, done: false, doubled: false }];
   activeHand = 0;
+  Sound.deal();
 
   renderDealer(true);
   renderPlayer();
@@ -274,6 +276,7 @@ function updateControls() {
 hitBtn.addEventListener("click", () => {
   const hand = playerHands[activeHand];
   hand.cards.push(draw());
+  Sound.deal();
   renderPlayer();
   if (handScore(hand.cards) >= 21) {
     hand.done = true;
@@ -295,6 +298,7 @@ doubleBtn.addEventListener("click", () => {
   hand.doubled = true;
   hand.cards.push(draw());
   hand.done = true;
+  Sound.deal();
   renderPlayer();
   nextHandOrDealer();
 });
@@ -306,6 +310,7 @@ splitBtn.addEventListener("click", () => {
   const newHand = { cards: [moved, draw()], bet: hand.bet, done: false, doubled: false };
   hand.cards.push(draw());
   playerHands.splice(activeHand + 1, 0, newHand);
+  Sound.deal();
   renderPlayer();
   updateControls();
 });
@@ -340,9 +345,11 @@ function finishRound(sideNotes) {
   inRound = false;
   renderDealer(false);
 
+  const balanceBefore = balance;
   const dealerTotal = handScore(dealerHand);
   const dealerBJ = isBlackjack(dealerHand);
   const results = [];
+  let anyBJ = false;
 
   playerHands.forEach((hand, idx) => {
     const pTotal = handScore(hand.cards);
@@ -355,6 +362,7 @@ function finishRound(sideNotes) {
     } else if (pBJ) {
       const win = Math.floor(hand.bet * 1.5);
       setBalance(balance + hand.bet + win); // 3:2
+      anyBJ = true;
       results.push(label + "BLACKJACK! +" + win);
     } else if (dealerBJ) {
       results.push(label + "Krupiye Blackjack — kayıp");
@@ -376,6 +384,11 @@ function finishRound(sideNotes) {
 
   const allNotes = [...(sideNotes || []), ...results];
   msg(allNotes.join(" | "));
+
+  // Sonuç sesi
+  if (anyBJ) Sound.bigwin();
+  else if (balance > balanceBefore) Sound.win();
+  else Sound.lose();
 
   // Bahisleri sıfırla, kontrolleri resetle
   bets = { main: 0, pp: 0, tp: 0 };
